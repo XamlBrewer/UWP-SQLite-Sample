@@ -108,7 +108,7 @@
         public static void DeletePerson(Person person)
         {
             // Create a new connection
-            using (var db = new SQLiteConnection(new SQLitePlatformWinRT(), dbPath))
+            using (var db = new SQLiteConnection(new SQLitePlatformWinRT(), DbPath))
             {
                 // Activate Tracing
                 db.TraceListener = new DebugTraceListener();
@@ -126,7 +126,7 @@
             List<Person> models;
 
             // Create a new connection
-            using (var db = new SQLiteConnection(new SQLitePlatformWinRT(), dbPath))
+            using (var db = new SQLiteConnection(new SQLitePlatformWinRT(), DbPath))
             {
                 // Activate Tracing
                 db.TraceListener = new DebugTraceListener();
@@ -141,7 +141,7 @@
         public static Person GetPersonById(int Id)
         {
             // Create a new connection
-            using (var db = new SQLiteConnection(new SQLitePlatformWinRT(), dbPath))
+            using (var db = new SQLiteConnection(new SQLitePlatformWinRT(), DbPath))
             {
                 // Activate Tracing
                 db.TraceListener = new DebugTraceListener();
@@ -155,7 +155,7 @@
         public static void SavePerson(Person person)
         {
             // Create a new connection
-            using (var db = new SQLiteConnection(new SQLitePlatformWinRT(), dbPath))
+            using (var db = new SQLiteConnection(new SQLitePlatformWinRT(), DbPath))
             {
                 // Activate Tracing
                 db.TraceListener = new DebugTraceListener();

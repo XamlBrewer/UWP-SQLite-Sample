@@ -4,24 +4,245 @@
       xmlns:local="using:XamlBrewer.Uwp.SqLiteSample"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:mvvm="using:Mvvm"
+      xmlns:vm="using:XamlBrewer.Uwp.SqLiteSample.ViewModels"
       mc:Ignorable="d">
 
-    <Grid Background="Black">
+    <Page.Resources>
+        <mvvm:BooleanNegationConverter x:Key="BooleanNegationConverter" />
+        <mvvm:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <mvvm:BooleanToVisibilityConverter x:Key="ReverseBooleanToVisibilityConverter"
+                                           IsReversed="True" />
+    </Page.Resources>
+
+    <Page.DataContext>
+        <vm:MainPageViewModel />
+    </Page.DataContext>
+
+    <Grid Background="Black"
+          Margin="8">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="160" />
+            <ColumnDefinition Width="240" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <Image Source="Assets/jamesbond.jpg"
-               Margin="8"
-               VerticalAlignment="Top"
-               HorizontalAlignment="Left" />
-        <Button Content="Create DB"
-                Click="Button_Click"
+
+        <!-- Main Buttons -->
+        <StackPanel Visibility="{Binding IsInEditMode, Converter={StaticResource ReverseBooleanToVisibilityConverter}}"
+                    Orientation="Horizontal">
+            <AppBarButton Icon="Setting"
+                          Label="Create"
+                          Command="{Binding CreateCommand}" />
+            <AppBarButton Icon="View"
+                          Label="View all"
+                          Command="{Binding SelectCommand}" />
+        </StackPanel>
+
+        <!-- Logo -->
+        <Viewbox Grid.Row="1"
+                 VerticalAlignment="Bottom"
+                 HorizontalAlignment="Left"
+                 StretchDirection="DownOnly"
+                 MaxWidth="160"
+                 Margin="0 8 0 0">
+            <Canvas Height="80"
+                    Width="200"
+                    Background="Transparent">
+                <Canvas>
+                    <Viewbox Height="70"
+                             Canvas.Left="5"
+                             Canvas.Top="5">
+                        <Canvas Width="124"
+                                Height="240"
+                                Background="Transparent">
+                            <Path Width="116"
+                                  Height="236"
+                                  Margin="4 0 4 4"
+                                  Stretch="Fill"
+                                  Fill="White"
+                                  Data="F1 M 4869.77,-3633.83C 4870.14,-3633.18 4866.87,-3606.81 4867.34,-3603.82C 4867.81,-3600.82 4871.83,-3590.35 4871.83,-3584.36C 4871.83,-3574.77 4868.13,-3569.7 4865.19,-3561.36C 4863.32,-3556.07 4863.13,-3540.54 4862.94,-3538.77C 4862.76,-3536.99 4853.72,-3414.8 4852.97,-3411.99C 4852.22,-3409.19 4849.1,-3401.58 4843.86,-3401.33C 4838.63,-3401.08 4802.53,-3401.33 4809.36,-3401.33C 4816.18,-3401.33 4779.21,-3401.08 4773.98,-3401.33C 4768.74,-3401.58 4766.14,-3408.25 4765.74,-3411.99C 4765.44,-3414.88 4755.96,-3536.99 4755.77,-3538.77C 4755.58,-3540.54 4755.39,-3556.07 4753.52,-3561.36C 4750.58,-3569.7 4746.89,-3574.77 4746.89,-3584.36C 4746.89,-3590.35 4750.91,-3600.82 4751.37,-3603.82C 4751.84,-3606.81 4748.57,-3633.18 4748.94,-3633.83C 4749.32,-3634.49 4750.81,-3634.49 4750.81,-3634.49" />
+                        </Canvas>
+                    </Viewbox>
+                </Canvas>
+                <Grid Width="200"
+                      Height="80">
+                    <TextBlock Foreground="OrangeRed"
+                               FontSize="24"
+                               FontWeight="SemiBold"
+                               VerticalAlignment="Bottom"
+                               Padding="0"
+                               Margin="48 0 8 12">
+                                    <Run Text="XAML" />
+                                    <Run Text="Brewer"
+                                         Foreground="White"
+                                         FontWeight="Light" />
+                    </TextBlock>
+                </Grid>
+            </Canvas>
+        </Viewbox>
+
+        <!-- Edit Buttons -->
+        <StackPanel Grid.Row="0"
+                    Grid.Column="1"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Left"
+                    Visibility="{Binding IsInEditMode, Converter={StaticResource ReverseBooleanToVisibilityConverter}}">
+            <AppBarButton Command="{Binding EditCommand}"
+                          Icon="Edit"
+                          Label="Edit" />
+            <AppBarButton Command="{Binding NewCommand}"
+                          Icon="Add"
+                          Label="New" />
+            <AppBarButton Command="{Binding DeleteCommand}"
+                          Icon="Delete"
+                          Label="Delete" />
+        </StackPanel>
+        <StackPanel Grid.Row="0"
+                    Grid.Column="1"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Visibility="{Binding IsInEditMode, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <AppBarButton Command="{Binding CancelCommand}"
+                          Icon="Cancel"
+                          Label="Cancel" />
+            <AppBarButton Command="{Binding SaveCommand}"
+                          Icon="Save"
+                          Label="Save" />
+        </StackPanel>
+
+        <!-- List -->
+        <ListView SelectionMode="Single"
+                  ItemsSource="{Binding Persons}"
+                  SelectedItem="{Binding SelectedPerson, Mode=TwoWay}"
+                  IsEnabled="{Binding IsInEditMode, Converter={StaticResource BooleanNegationConverter}}"
+                  Grid.Column="1"
+                  Grid.Row="1"
+                  Margin="8 0"
+                  VerticalAlignment="Center">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Border Height="64"
+                            Width="180"
+                            Background="Transparent">
+                        <TextBlock FontSize="20"
+                                   Margin="10"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Left">
+                                <Run Text="{Binding Name}" />
+                        </TextBlock>
+                    </Border>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <!-- Details -->
+        <Border Visibility="{Binding HasSelection, Converter={StaticResource BooleanToVisibilityConverter}}"
+                Grid.Column="2"
                 Grid.Row="1"
-                Margin="8" />
+                Margin="0">
+            <Grid DataContext="{Binding SelectedPerson}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="8" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="8" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="8" />
+                    <RowDefinition />
+                    <RowDefinition Height="8" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <TextBlock Text="Id"
+                           FontSize="20"
+                           HorizontalAlignment="Right"
+                           FontWeight="Light"
+                           Foreground="LightSlateGray" />
+                <TextBlock Grid.Column="2"
+                           Text="{Binding Id}"
+                           FontSize="20" />
+                <TextBlock Grid.Row="2"
+                           Text="Name"
+                           FontSize="20"
+                           HorizontalAlignment="Right"
+                           FontWeight="Light"
+                           Foreground="LightSlateGray" />
+                <TextBlock Visibility="{Binding IsInEditMode, Converter={StaticResource ReverseBooleanToVisibilityConverter}}"
+                           Grid.Row="2"
+                           Grid.Column="2"
+                           Text="{Binding Name}"
+                           FontSize="20" />
+                <TextBox Visibility="{Binding IsInEditMode, Converter={StaticResource BooleanToVisibilityConverter}}"
+                         Grid.Row="2"
+                         Grid.Column="2"
+                         Text="{Binding Name, Mode=TwoWay}"
+                         FontSize="20" />
+                <TextBlock Grid.Row="4"
+                           Text="Born"
+                           FontSize="20"
+                           HorizontalAlignment="Right"
+                           FontWeight="Light"
+                           Foreground="LightSlateGray" />
+                <!--<TextBlock Visibility="{Binding IsInEditMode, Converter={StaticResource ReverseBooleanToVisibilityConverter}}"
+                           Grid.Row="4"
+                           Grid.Column="2"
+                           Text="{Binding Status}"
+                           FontSize="20" />
+                <controls:EnumerationSlider Visibility="{Binding IsInEditMode, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                            Enumeration="U2UC.WinRT.SQLiteSample.ViewModels.Status"
+                                            Grid.Row="4"
+                                            Grid.Column="2"
+                                            Value="{Binding StatusString, Mode=TwoWay}"
+                                            FontSize="20" />-->
+                <TextBlock Grid.Row="6"
+                           Text="Picture"
+                           FontSize="20"
+                           HorizontalAlignment="Right"
+                           FontWeight="Light"
+                           Foreground="LightSlateGray" />
+                <Grid Grid.Row="6"
+                      Grid.Column="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+                    <Image Stretch="Uniform"
+                           Source="{Binding ImageSource}"
+                           VerticalAlignment="Top"
+                           HorizontalAlignment="Left" />
+                    <AppBarButton Visibility="{Binding IsInEditMode, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                  Grid.Column="1"
+                                  Command="{Binding UploadImageCommand}"
+                                  Label="Image"
+                                  Icon="Pictures" />
+                </Grid>
+                <TextBlock Grid.Row="8"
+                           Text="Description"
+                           FontSize="20"
+                           HorizontalAlignment="Right"
+                           FontWeight="Light"
+                           Foreground="LightSlateGray" />
+                <TextBlock Visibility="{Binding IsInEditMode, Converter={StaticResource ReverseBooleanToVisibilityConverter}}"
+                           Grid.Row="8"
+                           Grid.Column="2"
+                           Text="{Binding Description}"
+                           FontSize="20"
+                           TextWrapping="Wrap" />
+                <TextBox Visibility="{Binding IsInEditMode, Converter={StaticResource BooleanToVisibilityConverter}}"
+                         Grid.Row="8"
+                         Grid.Column="2"
+                         Text="{Binding Description, Mode=TwoWay}"
+                         FontSize="20"
+                         TextWrapping="Wrap" />
+            </Grid>
+        </Border>
     </Grid>
 </Page>
