@@ -32,7 +32,7 @@ namespace XamlBrewer.Uwp.SqLiteSample.Models
         /// <summary>
         /// Gets or sets the day of birth.
         /// </summary>
-        public DateTime DayOfBirth { get; set; }
+        public DateTimeOffset DayOfBirth { get; set; }
 
         /// <summary>
         /// Gets or sets the picture.

@@ -78,6 +78,7 @@
                 this.OnPropertyChanged(string.Empty);
             }
         }
+
         public string Name
         {
             get
@@ -95,6 +96,28 @@
                 if (this.model != null)
                 {
                     this.model.Name = value;
+                    this.OnPropertyChanged();
+                }
+            }
+        }
+
+        public DateTimeOffset DayOfBirth
+        {
+            get
+            {
+                if (this.model == null)
+                {
+                    return new DateTime();
+                }
+
+                return this.model.DayOfBirth;
+            }
+
+            set
+            {
+                if (this.model != null)
+                {
+                    this.model.DayOfBirth = value;
                     this.OnPropertyChanged();
                 }
             }

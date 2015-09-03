@@ -13,6 +13,7 @@
         <mvvm:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <mvvm:BooleanToVisibilityConverter x:Key="ReverseBooleanToVisibilityConverter"
                                            IsReversed="True" />
+        <mvvm:StringFormatConverter x:Key="StringFormatConverter" />
     </Page.Resources>
 
     <Page.DataContext>
@@ -191,17 +192,16 @@
                            HorizontalAlignment="Right"
                            FontWeight="Light"
                            Foreground="LightSlateGray" />
-                <!--<TextBlock Visibility="{Binding IsInEditMode, Converter={StaticResource ReverseBooleanToVisibilityConverter}}"
+                <TextBlock Visibility="{Binding IsInEditMode, Converter={StaticResource ReverseBooleanToVisibilityConverter}}"
                            Grid.Row="4"
                            Grid.Column="2"
-                           Text="{Binding Status}"
+                           Text="{Binding DayOfBirth,Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:d}'}"
                            FontSize="20" />
-                <controls:EnumerationSlider Visibility="{Binding IsInEditMode, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                            Enumeration="U2UC.WinRT.SQLiteSample.ViewModels.Status"
-                                            Grid.Row="4"
-                                            Grid.Column="2"
-                                            Value="{Binding StatusString, Mode=TwoWay}"
-                                            FontSize="20" />-->
+                <DatePicker Visibility="{Binding IsInEditMode, Converter={StaticResource BooleanToVisibilityConverter}}"
+                            Grid.Row="4"
+                            Grid.Column="2"
+                            Date="{Binding DayOfBirth, Mode=TwoWay}"
+                            FontSize="20" />
                 <TextBlock Grid.Row="6"
                            Text="Picture"
                            FontSize="20"
