@@ -26,9 +26,9 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="160" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
@@ -45,7 +45,7 @@
         </StackPanel>
 
         <!-- Logo -->
-        <Viewbox Grid.Row="1"
+        <Viewbox Grid.Row="2"
                  VerticalAlignment="Bottom"
                  HorizontalAlignment="Left"
                  StretchDirection="DownOnly"
@@ -91,7 +91,7 @@
         <StackPanel Grid.Row="0"
                     Grid.Column="1"
                     Orientation="Horizontal"
-                    HorizontalAlignment="Left"
+                    HorizontalAlignment="Right"
                     Visibility="{Binding IsInEditMode, Converter={StaticResource ReverseBooleanToVisibilityConverter}}">
             <AppBarButton Command="{Binding EditCommand}"
                           Icon="Edit"
@@ -121,46 +121,29 @@
                             ItemsSource="{Binding Persons}"
                             IsEnabled="{Binding IsInEditMode, Converter={StaticResource BooleanNegationConverter}}"
                             Grid.Column="0"
-                            Grid.ColumnSpan="2"
                             Grid.Row="1"
-                            Margin="8 0"
-                            SelectedItemChanged="CoverFlow_SelectedItemChanged">
+                            Margin="8 24"
+                            SelectedItemChanged="CoverFlow_SelectedItemChanged"
+                            SpaceBetweenSelectedItemAndItems="120">
             <controls:CoverFlow.ItemTemplate>
                 <DataTemplate>
-                    <Image Stretch="UniformToFill"
-                           Source="{Binding ImageSource}" />
+                    <Border BorderThickness="1"
+                            BorderBrush="Black">
+                        <!-- Enforce the image proportion -->
+                        <Viewbox>
+                            <Image Stretch="UniformToFill"
+                                   Source="{Binding ImageSource}"
+                                   Height="800"
+                                   Width="600" />
+                        </Viewbox>
+                    </Border>
                 </DataTemplate>
             </controls:CoverFlow.ItemTemplate>
         </controls:CoverFlow>
 
-        <!-- List -->
-        <!--<ListView SelectionMode="Single"
-                  ItemsSource="{Binding Persons}"
-                  SelectedItem="{Binding SelectedPerson, Mode=TwoWay}"
-                  IsEnabled="{Binding IsInEditMode, Converter={StaticResource BooleanNegationConverter}}"
-                  Grid.Column="1"
-                  Grid.Row="1"
-                  Margin="8 0"
-                  VerticalAlignment="Center">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <Border Height="64"
-                            Width="180"
-                            Background="Transparent">
-                        <TextBlock FontSize="20"
-                                   Margin="10"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Left">
-                                <Run Text="{Binding Name}" />
-                        </TextBlock>
-                    </Border>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>-->
-
         <!-- Details -->
         <Border Visibility="{Binding HasSelection, Converter={StaticResource BooleanToVisibilityConverter}}"
-                Grid.Column="2"
+                Grid.Column="1"
                 Grid.Row="1"
                 Margin="0">
             <Grid DataContext="{Binding SelectedPerson}">
@@ -176,9 +159,9 @@
                     <RowDefinition Height="8" />
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="8" />
-                    <RowDefinition />
-                    <RowDefinition Height="8" />
                     <RowDefinition Height="auto" />
+                    <RowDefinition Height="8" />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
                 <TextBlock Text="Id"
                            FontSize="20"
@@ -222,26 +205,19 @@
                             FontSize="20" />
                 <TextBlock Grid.Row="6"
                            Text="Picture"
+                           Visibility="{Binding IsInEditMode, Converter={StaticResource BooleanToVisibilityConverter}}"
                            FontSize="20"
                            HorizontalAlignment="Right"
                            FontWeight="Light"
                            Foreground="LightSlateGray" />
-                <Grid Grid.Row="6"
-                      Grid.Column="2">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition Width="auto" />
-                    </Grid.ColumnDefinitions>
-                    <Image Stretch="Uniform"
-                           Source="{Binding ImageSource}"
-                           VerticalAlignment="Top"
-                           HorizontalAlignment="Left" />
-                    <AppBarButton Visibility="{Binding IsInEditMode, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                  Grid.Column="1"
-                                  Command="{Binding UploadImageCommand}"
-                                  Label="Image"
-                                  Icon="Pictures" />
-                </Grid>
+                <AppBarButton Grid.Row="6"
+                              Grid.Column="2"
+                              Visibility="{Binding IsInEditMode, Converter={StaticResource BooleanToVisibilityConverter}}"
+                              Command="{Binding UploadImageCommand}"
+                              Label="Change"
+                              Icon="Pictures"
+                              Margin="-8 -8 0 0" />
+
                 <TextBlock Grid.Row="8"
                            Text="Description"
                            FontSize="20"
