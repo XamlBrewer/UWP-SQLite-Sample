@@ -17,8 +17,7 @@ using SQLite.Net.Platform.WinRT;
 using XamlBrewer.Uwp.SqLiteSample.Models;
 using Windows.Storage;
 using XamlBrewer.Uwp.SqLiteSample.DataAccessLayer;
-
-// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
+using XamlBrewer.Uwp.SqLiteSample.ViewModels;
 
 namespace XamlBrewer.Uwp.SqLiteSample
 {
@@ -27,12 +26,14 @@ namespace XamlBrewer.Uwp.SqLiteSample
         public MainPage()
         {
             this.InitializeComponent();
-
         }
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// TODO: Fix binding in CoverFlow. Make SelectedItem a dependency property?
+        /// </summary>
+        private void CoverFlow_SelectedItemChanged(Controls.CoverFlowEventArgs e)
         {
-            await Dal.CreateDatabase();
+            ((MainPageViewModel)this.DataContext).SelectedPerson = this.CoverFlow.SelectedItem as PersonViewModel;
         }
     }
 }

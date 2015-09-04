@@ -5,16 +5,21 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlBrewer.Uwp.SqLiteSample", "XamlBrewer.Uwp.SqLiteSample\XamlBrewer.Uwp.SqLiteSample.csproj", "{8C1F4188-674B-4BCB-A2D4-E909CD424A16}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlBrewer.Uwp.Controls", "XamlBrewer.Uwp.Controls\XamlBrewer.Uwp.Controls.csproj", "{FA829C01-79B0-402B-9002-C7992D1930B8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
 		Debug|ARM = Debug|ARM
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
 		Release|ARM = Release|ARM
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8C1F4188-674B-4BCB-A2D4-E909CD424A16}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{8C1F4188-674B-4BCB-A2D4-E909CD424A16}.Debug|ARM.ActiveCfg = Debug|ARM
 		{8C1F4188-674B-4BCB-A2D4-E909CD424A16}.Debug|ARM.Build.0 = Debug|ARM
 		{8C1F4188-674B-4BCB-A2D4-E909CD424A16}.Debug|ARM.Deploy.0 = Debug|ARM
@@ -24,6 +29,7 @@ Global
 		{8C1F4188-674B-4BCB-A2D4-E909CD424A16}.Debug|x86.ActiveCfg = Debug|x86
 		{8C1F4188-674B-4BCB-A2D4-E909CD424A16}.Debug|x86.Build.0 = Debug|x86
 		{8C1F4188-674B-4BCB-A2D4-E909CD424A16}.Debug|x86.Deploy.0 = Debug|x86
+		{8C1F4188-674B-4BCB-A2D4-E909CD424A16}.Release|Any CPU.ActiveCfg = Release|x86
 		{8C1F4188-674B-4BCB-A2D4-E909CD424A16}.Release|ARM.ActiveCfg = Release|ARM
 		{8C1F4188-674B-4BCB-A2D4-E909CD424A16}.Release|ARM.Build.0 = Release|ARM
 		{8C1F4188-674B-4BCB-A2D4-E909CD424A16}.Release|ARM.Deploy.0 = Release|ARM
@@ -33,6 +39,22 @@ Global
 		{8C1F4188-674B-4BCB-A2D4-E909CD424A16}.Release|x86.ActiveCfg = Release|x86
 		{8C1F4188-674B-4BCB-A2D4-E909CD424A16}.Release|x86.Build.0 = Release|x86
 		{8C1F4188-674B-4BCB-A2D4-E909CD424A16}.Release|x86.Deploy.0 = Release|x86
+		{FA829C01-79B0-402B-9002-C7992D1930B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA829C01-79B0-402B-9002-C7992D1930B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA829C01-79B0-402B-9002-C7992D1930B8}.Debug|ARM.ActiveCfg = Debug|ARM
+		{FA829C01-79B0-402B-9002-C7992D1930B8}.Debug|ARM.Build.0 = Debug|ARM
+		{FA829C01-79B0-402B-9002-C7992D1930B8}.Debug|x64.ActiveCfg = Debug|x64
+		{FA829C01-79B0-402B-9002-C7992D1930B8}.Debug|x64.Build.0 = Debug|x64
+		{FA829C01-79B0-402B-9002-C7992D1930B8}.Debug|x86.ActiveCfg = Debug|x86
+		{FA829C01-79B0-402B-9002-C7992D1930B8}.Debug|x86.Build.0 = Debug|x86
+		{FA829C01-79B0-402B-9002-C7992D1930B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA829C01-79B0-402B-9002-C7992D1930B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA829C01-79B0-402B-9002-C7992D1930B8}.Release|ARM.ActiveCfg = Release|ARM
+		{FA829C01-79B0-402B-9002-C7992D1930B8}.Release|ARM.Build.0 = Release|ARM
+		{FA829C01-79B0-402B-9002-C7992D1930B8}.Release|x64.ActiveCfg = Release|x64
+		{FA829C01-79B0-402B-9002-C7992D1930B8}.Release|x64.Build.0 = Release|x64
+		{FA829C01-79B0-402B-9002-C7992D1930B8}.Release|x86.ActiveCfg = Release|x86
+		{FA829C01-79B0-402B-9002-C7992D1930B8}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

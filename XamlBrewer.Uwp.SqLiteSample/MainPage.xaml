@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:mvvm="using:Mvvm"
+      xmlns:controls="using:XamlBrewer.Uwp.Controls"
       xmlns:vm="using:XamlBrewer.Uwp.SqLiteSample.ViewModels"
       mc:Ignorable="d">
 
@@ -28,7 +29,7 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="160" />
-            <ColumnDefinition Width="240" />
+            <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
@@ -115,8 +116,25 @@
                           Label="Save" />
         </StackPanel>
 
+        <!-- CoverFlow -->
+        <controls:CoverFlow x:Name="CoverFlow"
+                            ItemsSource="{Binding Persons}"
+                            IsEnabled="{Binding IsInEditMode, Converter={StaticResource BooleanNegationConverter}}"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Grid.Row="1"
+                            Margin="8 0"
+                            SelectedItemChanged="CoverFlow_SelectedItemChanged">
+            <controls:CoverFlow.ItemTemplate>
+                <DataTemplate>
+                    <Image Stretch="UniformToFill"
+                           Source="{Binding ImageSource}" />
+                </DataTemplate>
+            </controls:CoverFlow.ItemTemplate>
+        </controls:CoverFlow>
+
         <!-- List -->
-        <ListView SelectionMode="Single"
+        <!--<ListView SelectionMode="Single"
                   ItemsSource="{Binding Persons}"
                   SelectedItem="{Binding SelectedPerson, Mode=TwoWay}"
                   IsEnabled="{Binding IsInEditMode, Converter={StaticResource BooleanNegationConverter}}"
@@ -138,7 +156,7 @@
                     </Border>
                 </DataTemplate>
             </ListView.ItemTemplate>
-        </ListView>
+        </ListView>-->
 
         <!-- Details -->
         <Border Visibility="{Binding HasSelection, Converter={StaticResource BooleanToVisibilityConverter}}"
