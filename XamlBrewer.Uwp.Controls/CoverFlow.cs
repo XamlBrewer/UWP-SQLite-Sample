@@ -92,7 +92,10 @@
             {
                 CoverFlowItem o = GetItemContainerForObject(value);
                 if (o != null)
+                { 
+                    
                     SelectedIndex = items.IndexOf(o);
+                }
             }
         }
 
@@ -361,6 +364,7 @@
             {
                 this.ObjectToItemContainer.Remove(item);
             }
+
             items.Remove(item2);
         }
 

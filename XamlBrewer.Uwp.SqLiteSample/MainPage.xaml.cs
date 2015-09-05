@@ -23,17 +23,34 @@ namespace XamlBrewer.Uwp.SqLiteSample
 {
     public sealed partial class MainPage : Page
     {
+        MainPageViewModel viewModel;
+
         public MainPage()
         {
             this.InitializeComponent();
+
+            viewModel = ((MainPageViewModel)this.DataContext);
+            viewModel.PropertyChanged += MainPage_PropertyChanged;
         }
 
         /// <summary>
-        /// TODO: Fix binding in CoverFlow. Make SelectedItem a dependency property?
+        /// TODO: Fix binding in CoverFlow. Make SelectedItem a dependency property.
+        /// </summary>
+        private void MainPage_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "SelectedPerson" && viewModel.SelectedPerson != null)
+            {
+                this.CoverFlow.SelectedItem = viewModel.SelectedPerson;
+                //this.CoverFlow.SelectedIndex = viewModel.Persons.Count - 1;
+            }
+        }
+
+        /// <summary>
+        /// TODO: Fix binding in CoverFlow. Make SelectedItem a dependency property.
         /// </summary>
         private void CoverFlow_SelectedItemChanged(Controls.CoverFlowEventArgs e)
         {
-            ((MainPageViewModel)this.DataContext).SelectedPerson = this.CoverFlow.SelectedItem as PersonViewModel;
+            viewModel.SelectedPerson = this.CoverFlow.SelectedItem as PersonViewModel;
         }
     }
 }

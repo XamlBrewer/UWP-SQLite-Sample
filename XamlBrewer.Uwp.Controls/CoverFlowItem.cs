@@ -96,42 +96,52 @@
 
         public void SetValues(double x, int zIndex, double r, double z, double s, Duration d, EasingFunctionBase ease, bool useAnimation)
         {
-            if (useAnimation)
+            try
             {
-                if (!isAnimating && Canvas.GetLeft(this) != x)
-                    Canvas.SetLeft(this, this.x);
-
-                rotationKeyFrame.Value = r;
-                offestZKeyFrame.Value = z;
-                scaleYKeyFrame.Value = s;
-                scaleXKeyFrame.Value = s;
-                xAnimation.To = x;
-
-                if (duration != d)
+                if (useAnimation)
                 {
-                    duration = d;
-                    rotationKeyFrame.KeyTime = KeyTime.FromTimeSpan(d.TimeSpan);
-                    offestZKeyFrame.KeyTime = KeyTime.FromTimeSpan(d.TimeSpan);
-                    scaleYKeyFrame.KeyTime = KeyTime.FromTimeSpan(d.TimeSpan);
-                    scaleXKeyFrame.KeyTime = KeyTime.FromTimeSpan(d.TimeSpan);
-                    xAnimation.Duration = d;
-                }
-                if (easingFunction != ease)
-                {
-                    easingFunction = ease;
-                    rotationKeyFrame.EasingFunction = ease;
-                    offestZKeyFrame.EasingFunction = ease;
-                    scaleYKeyFrame.EasingFunction = ease;
-                    scaleXKeyFrame.EasingFunction = ease;
-                    xAnimation.EasingFunction = ease;
-                }
+                    if (!isAnimating && Canvas.GetLeft(this) != x)
+                        Canvas.SetLeft(this, this.x);
 
-                isAnimating = true;
-                Animation.Begin();
-                Canvas.SetZIndex(this, zIndex);
+                    rotationKeyFrame.Value = r;
+                    offestZKeyFrame.Value = z;
+                    scaleYKeyFrame.Value = s;
+                    scaleXKeyFrame.Value = s;
+                    xAnimation.To = x;
+
+                    if (duration != d)
+                    {
+                        duration = d;
+                        rotationKeyFrame.KeyTime = KeyTime.FromTimeSpan(d.TimeSpan);
+                        offestZKeyFrame.KeyTime = KeyTime.FromTimeSpan(d.TimeSpan);
+                        scaleYKeyFrame.KeyTime = KeyTime.FromTimeSpan(d.TimeSpan);
+                        scaleXKeyFrame.KeyTime = KeyTime.FromTimeSpan(d.TimeSpan);
+                        xAnimation.Duration = d;
+                    }
+                    if (easingFunction != ease)
+                    {
+                        easingFunction = ease;
+                        rotationKeyFrame.EasingFunction = ease;
+                        offestZKeyFrame.EasingFunction = ease;
+                        scaleYKeyFrame.EasingFunction = ease;
+                        scaleXKeyFrame.EasingFunction = ease;
+                        xAnimation.EasingFunction = ease;
+                    }
+
+                    isAnimating = true;
+                    Animation.Begin();
+                    Canvas.SetZIndex(this, zIndex);
+                }
             }
-
-            this.x = x;
+            catch (Exception ex)
+            {
+                // Ignore.
+                // You get here by programmatically navigating to an item that is not visible.
+            }
+            finally
+            {
+                this.x = x;
+            }
         }
 
         protected override void OnApplyTemplate()

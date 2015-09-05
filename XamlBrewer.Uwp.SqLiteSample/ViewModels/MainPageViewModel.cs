@@ -104,6 +104,13 @@
             if (this.selectedPerson.Id == 0)
             {
                 this.persons.Remove(this.selectedPerson);
+                this.SelectedPerson = null;
+
+                // Select last person. 
+                if (this.persons.Count > 0)
+                {
+                    this.SelectedPerson = this.Persons.Last();
+                }
             }
             else
             {
@@ -130,6 +137,9 @@
 
             // Remove from list
             this.Persons.Remove(this.selectedPerson);
+
+            // Clear UI
+            this.SelectedPerson = null;
         }
 
         private bool New_CanExecute()
@@ -139,7 +149,7 @@
 
         private void New_Executed()
         {
-            this.persons.Add(new PersonViewModel(new Person()));
+            this.Persons.Add(new PersonViewModel(new Person()));
             this.SelectedPerson = this.persons.Last();
             this.editCommand.Execute(null);
         }

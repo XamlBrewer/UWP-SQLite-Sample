@@ -119,6 +119,7 @@
         <!-- CoverFlow -->
         <controls:CoverFlow x:Name="CoverFlow"
                             ItemsSource="{Binding Persons}"
+                            SelectedItem="{Binding SelectedPerson, Mode=TwoWay}"
                             IsEnabled="{Binding IsInEditMode, Converter={StaticResource BooleanNegationConverter}}"
                             Grid.Column="0"
                             Grid.Row="1"
