@@ -106,6 +106,7 @@
     <Compile Include="Mvvm\BindableBase.cs" />
     <Compile Include="Mvvm\BooleanNegationConverter.cs" />
     <Compile Include="Mvvm\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Mvvm\DateTimeToDateTimeOffsetConverter.cs" />
     <Compile Include="Mvvm\DelegateCommand.cs" />
     <Compile Include="Mvvm\StringFormatConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

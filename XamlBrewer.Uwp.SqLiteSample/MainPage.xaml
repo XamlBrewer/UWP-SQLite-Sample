@@ -15,6 +15,7 @@
         <mvvm:BooleanToVisibilityConverter x:Key="ReverseBooleanToVisibilityConverter"
                                            IsReversed="True" />
         <mvvm:StringFormatConverter x:Key="StringFormatConverter" />
+        <mvvm:DateTimeToDateTimeOffsetConverter x:Key="DateTimeToDateTimeOffsetConverter" />
     </Page.Resources>
 
     <Page.DataContext>
@@ -197,12 +198,12 @@
                 <TextBlock Visibility="{Binding IsInEditMode, Converter={StaticResource ReverseBooleanToVisibilityConverter}}"
                            Grid.Row="4"
                            Grid.Column="2"
-                           Text="{Binding DayOfBirth,Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:d}'}"
+                           Text="{Binding DayOfBirth,Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:D}'}"
                            FontSize="20" />
                 <DatePicker Visibility="{Binding IsInEditMode, Converter={StaticResource BooleanToVisibilityConverter}}"
                             Grid.Row="4"
                             Grid.Column="2"
-                            Date="{Binding DayOfBirth, Mode=TwoWay}"
+                            Date="{Binding DayOfBirth, Mode=TwoWay, Converter={StaticResource DateTimeToDateTimeOffsetConverter}}"
                             FontSize="20" />
                 <TextBlock Grid.Row="6"
                            Text="Picture"

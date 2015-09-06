@@ -1,9 +1,5 @@
 ﻿using SQLite.Net.Attributes;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace XamlBrewer.Uwp.SqLiteSample.Models
 {
@@ -32,7 +28,7 @@ namespace XamlBrewer.Uwp.SqLiteSample.Models
         /// <summary>
         /// Gets or sets the day of birth.
         /// </summary>
-        public DateTimeOffset DayOfBirth { get; set; }
+        public DateTime DayOfBirth { get; set; }
 
         /// <summary>
         /// Gets or sets the picture.

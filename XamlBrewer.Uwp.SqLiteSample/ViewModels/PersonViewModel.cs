@@ -101,7 +101,7 @@
             }
         }
 
-        public DateTimeOffset DayOfBirth
+        public DateTime DayOfBirth
         {
             get
             {
