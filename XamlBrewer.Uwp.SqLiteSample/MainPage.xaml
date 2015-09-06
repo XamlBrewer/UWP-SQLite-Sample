@@ -198,7 +198,7 @@
                 <TextBlock Visibility="{Binding IsInEditMode, Converter={StaticResource ReverseBooleanToVisibilityConverter}}"
                            Grid.Row="4"
                            Grid.Column="2"
-                           Text="{Binding DayOfBirth,Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:D}'}"
+                           Text="{Binding DayOfBirth,Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:d}'}"
                            FontSize="20" />
                 <DatePicker Visibility="{Binding IsInEditMode, Converter={StaticResource BooleanToVisibilityConverter}}"
                             Grid.Row="4"
