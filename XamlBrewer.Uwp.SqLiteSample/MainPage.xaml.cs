@@ -38,11 +38,11 @@ namespace XamlBrewer.Uwp.SqLiteSample
         /// </summary>
         private void MainPage_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "SelectedPerson" && viewModel.SelectedPerson != null)
-            {
-                this.CoverFlow.SelectedItem = viewModel.SelectedPerson;
-                //this.CoverFlow.SelectedIndex = viewModel.Persons.Count - 1;
-            }
+            //if (e.PropertyName == "SelectedPerson" && viewModel.SelectedPerson != null)
+            //{
+            //    this.CoverFlow.SelectedItem = viewModel.SelectedPerson;
+            //    //this.CoverFlow.SelectedIndex = viewModel.Persons.Count - 1;
+            //}
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace XamlBrewer.Uwp.SqLiteSample
         /// </summary>
         private void CoverFlow_SelectedItemChanged(Controls.CoverFlowEventArgs e)
         {
-            viewModel.SelectedPerson = this.CoverFlow.SelectedItem as PersonViewModel;
+            //viewModel.SelectedPerson = this.CoverFlow.SelectedItem as PersonViewModel;
         }
     }
 }

@@ -125,8 +125,8 @@
                             Grid.Column="0"
                             Grid.Row="1"
                             Margin="8 24"
-                            SelectedItemChanged="CoverFlow_SelectedItemChanged"
-                            SpaceBetweenSelectedItemAndItems="120">
+                            SpaceBetweenSelectedItemAndItems="120"
+                            >
             <controls:CoverFlow.ItemTemplate>
                 <DataTemplate>
                     <Border BorderThickness="1"
