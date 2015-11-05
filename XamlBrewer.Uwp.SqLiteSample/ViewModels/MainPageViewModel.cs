@@ -99,6 +99,7 @@
             this.saveCommand.RaiseCanExecuteChanged();
             this.cancelCommand.RaiseCanExecuteChanged();
         }
+
         private void Cancel_Executed()
         {
             if (this.selectedPerson.Id == 0)
@@ -125,9 +126,6 @@
         private async void Create_Executed()
         {
             await Dal.CreateDatabase();
-
-            // Select. Otherwise the displayed list may be out of sync with the db.
-            this.selectCommand.Execute(null);
         }
 
         private void Delete_Executed()
@@ -137,8 +135,6 @@
 
             // Remove from list
             this.Persons.Remove(this.selectedPerson);
-
-            // Clear UI
             this.SelectedPerson = null;
         }
 

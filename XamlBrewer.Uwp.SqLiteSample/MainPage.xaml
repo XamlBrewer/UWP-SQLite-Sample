@@ -122,11 +122,10 @@
                             ItemsSource="{Binding Persons}"
                             SelectedItem="{Binding SelectedPerson, Mode=TwoWay}"
                             IsEnabled="{Binding IsInEditMode, Converter={StaticResource BooleanNegationConverter}}"
+                            SpaceBetweenSelectedItemAndItems="120"
                             Grid.Column="0"
                             Grid.Row="1"
-                            Margin="8 24"
-                            SpaceBetweenSelectedItemAndItems="120"
-                            >
+                            Margin="8 24">
             <controls:CoverFlow.ItemTemplate>
                 <DataTemplate>
                     <Border BorderThickness="1"

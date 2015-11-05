@@ -114,7 +114,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CoverFlow.cs" />
-    <Compile Include="CoverFlowEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Properties\XamlBrewer.Uwp.Controls.rd.xml" />
   </ItemGroup>

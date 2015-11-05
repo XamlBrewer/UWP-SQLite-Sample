@@ -3,14 +3,13 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Linq;
     using Windows.Foundation;
     using Windows.System;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
     using Windows.UI.Xaml.Input;
     using Windows.UI.Xaml.Media;
-
-    public delegate void SelectedItemChangedEvent(CoverFlowEventArgs e);
 
     public class CoverFlow : ListBox
     {
@@ -30,46 +29,47 @@
         private int si;
         private int pageCount = 0;
 
-        private Point itemRemderTransformOrigin = new Point(.5, .5);
+        private Point itemRenderTransformOrigin = new Point(.5, .5);
 
         private double manipulationDistance = 0.0;
         private bool isManipulationActive = true;
 
-        public Point ItemRenderTransformOrigin
+        #region Dependency Property Registrations
+
+        public static readonly DependencyProperty ManipulationThresholdProperty =
+            DependencyProperty.Register("ManipulationThreshold", typeof(Double), typeof(CoverFlow), new PropertyMetadata(80d));
+
+        public static readonly DependencyProperty RotationAngleProperty =
+            DependencyProperty.Register("RotationAngle", typeof(double), typeof(CoverFlow), new PropertyMetadata(45d, new PropertyChangedCallback(CoverFlow.OnValuesChanged)));
+
+        public static readonly DependencyProperty ScaleProperty =
+            DependencyProperty.Register("Scale", typeof(double), typeof(CoverFlow), new PropertyMetadata(.7d, new PropertyChangedCallback(CoverFlow.OnValuesChanged)));
+
+        public static readonly DependencyProperty SpaceBetweenItemsProperty =
+            DependencyProperty.Register("SpaceBetweenItems", typeof(double), typeof(CoverFlow), new PropertyMetadata(100d, new PropertyChangedCallback(CoverFlow.OnValuesChanged)));
+
+        public static readonly DependencyProperty SpaceBetweenSelectedItemAndItemsProperty =
+            DependencyProperty.Register("SpaceBetweenSelectedItemAndItems", typeof(double), typeof(CoverFlow), new PropertyMetadata(250d, new PropertyChangedCallback(CoverFlow.OnValuesChanged)));
+
+        public static readonly DependencyProperty ZDistanceProperty =
+            DependencyProperty.Register("ZDistance", typeof(double), typeof(CoverFlow), new PropertyMetadata(0.0d, new PropertyChangedCallback(CoverFlow.OnValuesChanged)));
+
+        public Double ManipulationThreshold
         {
-            get
-            {
-                return itemRemderTransformOrigin;
-            }
-            set
-            {
-                itemRemderTransformOrigin = value;
-                foreach (ListBoxItem item in items)
-                    item.RenderTransformOrigin = itemRemderTransformOrigin;
-            }
+            get { return (Double)GetValue(ManipulationThresholdProperty); }
+            set { SetValue(ManipulationThresholdProperty, value); }
         }
 
-        #region Dependency Properties
-
-        public double ASI
+        public double RotationAngle
         {
-            get
-            {
-                return (double)GetValue(ASIProperty);
-            }
-            set
-            {
-                SetValue(ASIProperty, value);
-            }
+            get { return (double)GetValue(RotationAngleProperty); }
+            set { SetValue(RotationAngleProperty, value); }
         }
 
-        public static readonly DependencyProperty ASIProperty =
-            DependencyProperty.Register("ASIProperty", typeof(double), typeof(CoverFlow), new PropertyMetadata(0d, new PropertyChangedCallback(CoverFlow.OnASIChanged)));
-
-        private static void OnASIChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        public double Scale
         {
-            CoverFlow c = d as CoverFlow;
-            c.SetItemPositions();
+            get { return (double)GetValue(ScaleProperty); }
+            set { SetValue(ScaleProperty, value); }
         }
 
         public double SpaceBetweenItems
@@ -78,53 +78,16 @@
             set { SetValue(SpaceBetweenItemsProperty, value); }
         }
 
-        public static readonly DependencyProperty SpaceBetweenItemsProperty =
-            DependencyProperty.Register("SpaceBetweenItems", typeof(double), typeof(CoverFlow), new PropertyMetadata(100d, new PropertyChangedCallback(CoverFlow.OnValuesChanged)));
-
         public double SpaceBetweenSelectedItemAndItems
         {
             get { return (double)GetValue(SpaceBetweenSelectedItemAndItemsProperty); }
             set { SetValue(SpaceBetweenSelectedItemAndItemsProperty, value); }
         }
 
-        public static readonly DependencyProperty SpaceBetweenSelectedItemAndItemsProperty =
-            DependencyProperty.Register("SpaceBetweenSelectedItemAndItems", typeof(double), typeof(CoverFlow), new PropertyMetadata(250d, new PropertyChangedCallback(CoverFlow.OnValuesChanged)));
-
-        public double RotationAngle
-        {
-            get { return (double)GetValue(RotationAngleProperty); }
-            set { SetValue(RotationAngleProperty, value); }
-        }
-
-        public static readonly DependencyProperty RotationAngleProperty =
-            DependencyProperty.Register("RotationAngle", typeof(double), typeof(CoverFlow), new PropertyMetadata(45d, new PropertyChangedCallback(CoverFlow.OnValuesChanged)));
-
         public double ZDistance
         {
             get { return (double)GetValue(ZDistanceProperty); }
             set { SetValue(ZDistanceProperty, value); }
-        }
-
-        public static readonly DependencyProperty ZDistanceProperty =
-            DependencyProperty.Register("ZDistance", typeof(double), typeof(CoverFlow), new PropertyMetadata(0.0d, new PropertyChangedCallback(CoverFlow.OnValuesChanged)));
-
-        public double Scale
-        {
-            get { return (double)GetValue(ScaleProperty); }
-            set { SetValue(ScaleProperty, value); }
-        }
-
-        public static readonly DependencyProperty ScaleProperty =
-            DependencyProperty.Register("Scale", typeof(double), typeof(CoverFlow), new PropertyMetadata(.7d, new PropertyChangedCallback(CoverFlow.OnValuesChanged)));
-
-        public static readonly DependencyProperty ManipulationThresholdProperty =
-            DependencyProperty.Register("ManipulationThreshold", typeof(Double), typeof(CoverFlow), new PropertyMetadata(80d));
-
-
-        public Double ManipulationThreshold
-        {
-            get { return (Double)GetValue(ManipulationThresholdProperty); }
-            set { SetValue(ManipulationThresholdProperty, value); }
         }
 
         private static void OnValuesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -140,8 +103,8 @@
             items = new List<ListBoxItem>();
             tempItems = new List<ListBoxItem>();
 
-            SizeChanged += CoverFlowControl_SizeChanged;
-            SelectionChanged += CoverFlowControl_SelectionChanged;
+            SizeChanged += CoverFlow_SizeChanged;
+            SelectionChanged += CoverFlow_SelectionChanged;
         }
 
         protected override void OnApplyTemplate()
@@ -151,14 +114,6 @@
             this.ManipulationMode = ManipulationModes.TranslateX | ManipulationModes.TranslateRailsX;
             this.ManipulationStarted += OnManipulationStarted;
             this.ManipulationDelta += OnManipulationDelta;
-
-            this.SelectionChanged += CoverFlow_SelectionChanged;
-        }
-
-        private void CoverFlow_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            Debug.WriteLine("Selection changed to " + this.SelectedIndex);
-
         }
 
         #region Touch, Mouse, and Keyboard handling
@@ -247,9 +202,12 @@
             if (items.Count == 0)
                 return;
 
-            si = (int)Math.Round(ASI, 0);
+            si = SelectedIndex;
             if (si < 0)
+            {
                 return;
+            }
+
             for (int x = 0; x <= pageCount + 1; x++)
             {
                 if (x == 0)
@@ -270,7 +228,7 @@
 
             tempItems.Add(item);
 
-            double t = -(ASI - index);
+            double t = index - SelectedIndex;
             double tk = k;
             double tr = r;
             double ts = s;
@@ -313,12 +271,18 @@
             Canvas.SetZIndex(item, -d);
         }
 
-        void CoverFlowControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void CoverFlow_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-                ASI = SelectedIndex;
+            if (!e.AddedItems.Any())
+            {
+                // Delete
+                return;
+            }
+
+            SetItemPositions();
         }
 
-        void CoverFlowControl_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void CoverFlow_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             RectangleGeometry visibleArea = new RectangleGeometry();
             Rect clip = new Rect(0, 0, ActualWidth, ActualHeight);
@@ -336,6 +300,7 @@
         protected override void PrepareContainerForItemOverride(DependencyObject element, object item)
         {
             base.PrepareContainerForItemOverride(element, item);
+
             ListBoxItem item2 = element as ListBoxItem;
             if (item2 != null && !items.Contains(item2))
             {
@@ -357,7 +322,7 @@
                 myTransformGroup.Children.Add(translateTransform);
 
                 // Associate the transforms to the object 
-                item2.RenderTransformOrigin = itemRemderTransformOrigin;
+                item2.RenderTransformOrigin = itemRenderTransformOrigin;
                 item2.RenderTransform = myTransformGroup;
                 item2.Projection = planeProjection;
 
@@ -382,13 +347,15 @@
             else
                 SelectedIndex = 0;
         }
-        public void Prev()
+
+        public void Previous()
         {
             if (SelectedIndex > 0)
                 SelectedIndex--;
             else
                 SelectedIndex = Items.Count - 1;
         }
+
         public void PageUp()
         {
             int temp = SelectedIndex - pageCount - 1;
@@ -396,6 +363,7 @@
                 temp = 0;
             SelectedIndex = temp;
         }
+
         public void PageDown()
         {
             int temp = SelectedIndex + pageCount + 1;
@@ -403,10 +371,12 @@
                 temp = Items.Count - 1;
             SelectedIndex = temp;
         }
+
         public void First()
         {
             SelectedIndex = 0;
         }
+
         public void Last()
         {
             SelectedIndex = Items.Count - 1;
